@@ -1,0 +1,16 @@
+name: apiverve_motorcarrierlookup
+description: "Motor Carrier Lookup returns the FMCSA record of a trucking or bus company from its USDOT number or its MC, MX or FF docket number. It covers USDOT status, entity and operation type, addresses, dockets, fleet and driver counts, MCS-150 date, safety rating, out-of-service orders, operating authority status and insurance on file. Paid plans add contact details, cargo classes, equipment, mileage, crash rate, insurance policies, authority history and pass/fail compliance checks with your own thresholds."
+version: 1.2.6
+homepage: https://apiverve.com/marketplace/motorcarrierlookup?utm_source=dart&utm_medium=referral&utm_content=homepage
+repository: https://github.com/apiverve/motorcarrierlookup-api/tree/main/dart
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  http: ^1.1.0
+  http_parser: ^4.0.0
+
+dev_dependencies:
+  lints: ^3.0.0
+  test: ^1.24.0
