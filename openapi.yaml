@@ -1,0 +1,302 @@
+openapi: 3.0.4
+info:
+  title: Motor Carrier Lookup
+  description: >-
+    Motor Carrier Lookup returns the FMCSA record of a trucking or bus company
+    from its USDOT number or its MC, MX or FF docket number. It covers USDOT
+    status, entity and operation type, addresses, dockets, fleet and driver
+    counts, MCS-150 date, safety rating, out-of-service orders, operating
+    authority status and insurance on file. Paid plans add contact details,
+    cargo classes, equipment, mileage, crash rate, insurance policies, authority
+    history and pass/fail compliance checks with your own thresholds.
+  termsOfService: https://apiverve.com/terms/
+  contact:
+    name: APIVerve Support
+    email: hello@apiverve.com
+    url: https://apiverve.com/contact
+  version: 1.0.0
+externalDocs:
+  description: Learn more about APIVerve
+  url: https://docs.apiverve.com?utm_source=openapi
+servers:
+  - url: https://api.apiverve.com/
+paths:
+  /v1/motorcarrierlookup:
+    get:
+      summary: Motor Carrier Lookup
+      description: >-
+        Get the FMCSA census, authority, insurance and out-of-service record of
+        a carrier by USDOT or MC/MX/FF docket number
+      operationId: motorcarrierlookup
+      parameters:
+        - name: dot
+          in: query
+          schema:
+            type: string
+          required: false
+          description: USDOT number, for example 80806. Use dot, docket or mc
+          example: '80806'
+        - name: docket
+          in: query
+          schema:
+            type: string
+          required: false
+          description: 'Docket number with its prefix: MC, MX or FF, for example MC135797'
+          example: MC135797
+        - name: mc
+          in: query
+          schema:
+            type: string
+          required: false
+          description: MC number without the prefix, for example 135797
+          example: '135797'
+        - name: checks
+          in: query
+          schema:
+            type: boolean
+          required: false
+          description: Add pass/fail compliance checks against the thresholds below
+          example: true
+        - name: history
+          in: query
+          schema:
+            type: boolean
+          required: false
+          description: Add authority history and revocations
+          example: true
+        - name: minBipd
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: 'Compliance threshold: minimum BI&PD insurance on file in US dollars'
+          example: 750000
+        - name: minCargo
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: >-
+            Compliance threshold: minimum cargo insurance in US dollars; 0 skips
+            the check
+          example: 100000
+        - name: maxMcs150Months
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: >-
+            Compliance threshold: the MCS-150 must be updated within this many
+            months
+          example: 24
+        - name: minAuthorityDays
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: >-
+            Compliance threshold: minimum days since operating authority was
+            first granted
+          example: 90
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  error:
+                    type: string
+                    description: error
+                  data:
+                    type: object
+                    description: data
+              example:
+                status: ok
+                error: null
+                data:
+                  dotNumber: 80806
+                  legalName: J B HUNT TRANSPORT INC
+                  dbaName: J B HUNT
+                  status: active
+                  entityTypes:
+                    - freight_forwarder
+                    - carrier
+                    - shipper
+                    - broker
+                  operation: interstate
+                  operationClassifications:
+                    - AUTHORIZED FOR HIRE
+                  businessType: corporation
+                  registrationDate: '1974-06-01'
+                  physicalAddress:
+                    street: 615 J B HUNT CORPORATE DRIVE
+                    city: LOWELL
+                    state: AR
+                    zip: '72745'
+                    country: US
+                  mailingAddress:
+                    street: 615 J B HUNT CORPORATE DRIVE
+                    city: LOWELL
+                    state: AR
+                    zip: '72745'
+                    country: US
+                  phone: '4798200000'
+                  fax: '4798204566'
+                  email: lee.sarratt@jbhunt.com
+                  dockets:
+                    - docket: MC135797
+                      prefix: MC
+                      status: active
+                    - docket: FF051075
+                      prefix: FF
+                      status: active
+                  fleet:
+                    powerUnits: 25280
+                    trucks: 25280
+                    buses: 0
+                    drivers: 24116
+                    cdlDrivers: 23669
+                    interstateDrivers: 24116
+                    intrastateDrivers: 0
+                    sizeBand: 1000+
+                  hazmat: true
+                  mcs150:
+                    date: '2025-07-07'
+                    ageDays: 495
+                    mileage: 1629835251
+                    mileageYear: 2024
+                  safety:
+                    rating: satisfactory
+                    ratingDate: '1992-05-08'
+                    reviewType: compliance_review
+                    reviewDate: '1992-01-31'
+                    recordableCrashRate: null
+                  outOfService: false
+                  outOfServiceOrders: []
+                  cargoClasses:
+                    - General Freight
+                    - 'Metal: Sheets, Coils, Rolls'
+                    - Motor Vehicles
+                    - Logs, Poles, Beams, Lumber
+                    - Building Materials
+                    - Fresh Produce
+                    - Liquids/Gases
+                    - Intermodal Containers
+                    - Oilfield Equipment
+                    - Livestock
+                    - Grain, Feed, Hay
+                    - Meat
+                    - US Mail
+                    - Chemicals
+                    - Commodities Dry Bulk
+                    - Refrigerated Food
+                    - Beverages
+                    - Paper Products
+                    - Agricultural/Farm Supplies
+                    - Construction
+                    - 'Other: IEP'
+                  equipment:
+                    straightTrucks:
+                      owned: 874
+                      termLeased: 415
+                      tripLeased: 0
+                    tractors:
+                      owned: 20871
+                      termLeased: 3120
+                      tripLeased: 0
+                    trailers:
+                      owned: 146851
+                      termLeased: 5330
+                      tripLeased: 0
+                  dunsNumber: '6338552'
+                  priorRevocation: null
+                  authority:
+                    common: active
+                    contract: active
+                    broker: active
+                    applicationPending:
+                      common: false
+                      contract: false
+                      broker: false
+                    revocationPending:
+                      common: false
+                      contract: false
+                      broker: false
+                    authorizedFor:
+                      property: true
+                      passengers: false
+                      householdGoods: true
+                      private: false
+                      enterprise: false
+                    firstGrantedDate: '1976-12-06'
+                    authorityAgeDays: 18240
+                  insurance:
+                    bipdRequiredUsd: 1000000
+                    bipdOnFileUsd: 3500000
+                    cargoRequired: true
+                    cargoOnFile: true
+                    cargoCoverageUsd: null
+                    bondRequired: true
+                    bondOnFile: true
+                    pendingCancellation: false
+                    nextCancellationDate: null
+                    policies:
+                      - type: BIPD/Excess
+                        form: 91X
+                        insurer: ACE AMERICAN INSURANCE COMPANY
+                        policyNumber: XSAH11347472
+                        postedDate: '2026-04-21'
+                        effectiveDate: '2025-12-31'
+                        cancellationDate: null
+                        coverageUsd: 2500000
+                        underlyingLimitUsd: 500000
+                      - type: CARGO
+                        form: '83'
+                        insurer: TRAVELERS CASUALTY &  SURETY  CO. OF AMERICA
+                        policyNumber: '105917743'
+                        postedDate: '2023-10-23'
+                        effectiveDate: '2023-10-23'
+                        cancellationDate: null
+                        coverageUsd: 0
+                        underlyingLimitUsd: 0
+                      - type: SURETY
+                        form: '84'
+                        insurer: TRAVELERS CASUALTY &  SURETY  CO. OF AMERICA
+                        policyNumber: '105917743'
+                        postedDate: '2013-12-31'
+                        effectiveDate: '2014-01-13'
+                        cancellationDate: null
+                        coverageUsd: 0
+                        underlyingLimitUsd: 0
+                      - type: BIPD/Primary
+                        form: 91X
+                        insurer: SELF-INSURED
+                        policyNumber: NONE
+                        postedDate: '2019-07-15'
+                        effectiveDate: '1993-03-01'
+                        cancellationDate: null
+                        coverageUsd: 1000000
+                        underlyingLimitUsd: 0
+                  dataAsOf:
+                    census: '2026-11-14T07:58:48.003Z'
+                    licensing: '2026-11-14T07:58:48.003Z'
+                    outOfService: '2026-11-14T07:58:54.373Z'
+        '401':
+          description: Your request was not authorized, or your API Key was invalid
+        '404':
+          description: Requested resource was not found
+        '500':
+          description: A server error has occurred, try again later
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+security:
+  - api_key: []
